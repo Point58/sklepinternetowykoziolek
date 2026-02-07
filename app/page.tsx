@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Particles from "./components/Particles";
+import { createClient } from "@/app/lib/supabase/server";
 
 const navLinks = [
   { href: "/", label: "Strona główna" },
@@ -22,7 +23,11 @@ const features = [
   },
 ];
 
-export default function Home() {
+export default async function Home() {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
   return (
     <div className="page-backdrop min-h-screen text-black">
       <Particles />
@@ -54,6 +59,12 @@ export default function Home() {
                 className="text-sm text-black/70 hover:text-black transition-colors duration-200"
               >
                 Koszyk
+              </Link>
+              <Link
+                href={user ? "/profil" : "/logowanie"}
+                className="text-sm text-black/70 hover:text-black transition-colors duration-200"
+              >
+                {user ? "Profil" : "Zaloguj się"}
               </Link>
             </nav>
           </div>
