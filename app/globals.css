@@ -73,3 +73,34 @@ body {
 .animate-fade-in {
   animation: fade-in 0.5s ease-out forwards;
 }
+
+/* Cząsteczki – przelatują po całej stronie (tam i z powrotem) */
+@keyframes particle-fly-1 {
+  0%, 100% { transform: translate(0, 0); opacity: 0.35; }
+  50% { transform: translate(22vw, -28vh); opacity: 0.5; }
+}
+
+@keyframes particle-fly-2 {
+  0%, 100% { transform: translate(0, 0); opacity: 0.4; }
+  50% { transform: translate(-18vw, 24vh); opacity: 0.45; }
+}
+
+@keyframes particle-fly-3 {
+  0%, 100% { transform: translate(0, 0); opacity: 0.3; }
+  50% { transform: translate(25vw, 20vh); opacity: 0.5; }
+}
+
+@keyframes particle-fly-4 {
+  0%, 100% { transform: translate(0, 0); opacity: 0.4; }
+  50% { transform: translate(-24vw, -20vh); opacity: 0.35; }
+}
+
+@keyframes particle-fly-5 {
+  0%, 100% { transform: translate(0, 0); opacity: 0.35; }
+  50% { transform: translate(15vw, 30vh); opacity: 0.45; }
+}
+
+@keyframes particle-fly-6 {
+  0%, 100% { transform: translate(0, 0); opacity: 0.4; }
+  50% { transform: translate(-20vw, -25vh); opacity: 0.4; }
+}

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Particles from "./components/Particles";
 
 const navLinks = [
   { href: "/", label: "Strona główna" },
@@ -24,6 +25,7 @@ const features = [
 export default function Home() {
   return (
     <div className="page-backdrop min-h-screen text-black">
+      <Particles />
       <div className="relative z-10 flex min-h-screen flex-col">
         {/* Header */}
         <header
