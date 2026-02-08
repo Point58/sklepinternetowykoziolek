@@ -7,5 +7,5 @@ export default async function Home() {
     data: { user },
   } = await supabase.auth.getUser();
 
-  return <HomeClient user={!!user} />;
+  return <HomeClient user={user ? { email: user.email ?? null } : null} />;
 }

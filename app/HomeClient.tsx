@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import Particles from "./components/Particles";
+import ProfileDropdown from "./components/ProfileDropdown";
 import { useEffect, useRef, useState } from "react";
 
 const navLinks = [
@@ -253,7 +254,7 @@ function SectionPanel({ sectionId }: { sectionId: string }) {
   }
 }
 
-export default function HomeClient({ user }: { user: boolean }) {
+export default function HomeClient({ user }: { user: { email: string | null } | null }) {
   const [activeSection, setActiveSection] = useState(sections[0].id);
   const sectionRefs = useRef<(HTMLDivElement | null)[]>([]);
 
@@ -316,12 +317,7 @@ export default function HomeClient({ user }: { user: boolean }) {
               >
                 Koszyk
               </Link>
-              <Link
-                href={user ? "/profil" : "/logowanie"}
-                className="text-sm text-white/70 transition-all duration-200 hover:scale-105 hover:text-white"
-              >
-                {user ? "Profil" : "Zaloguj się"}
-              </Link>
+              <ProfileDropdown user={user} />
             </nav>
           </div>
         </header>
