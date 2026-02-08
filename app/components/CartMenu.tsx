@@ -28,22 +28,22 @@ export default function CartMenu({ isOpen, onClose }: CartMenuProps) {
   return (
     <>
       <div
-        className="fixed inset-0 z-[100] bg-black/20 backdrop-blur-sm animate-cart-backdrop"
+        className="fixed inset-0 z-[100] bg-black/40 backdrop-blur-sm animate-cart-backdrop"
         onClick={onClose}
         aria-hidden
       />
       <aside
-        className="fixed right-0 top-0 z-[101] flex h-full w-full max-w-md flex-col border-l border-black/10 bg-white shadow-xl animate-cart-panel"
+        className="fixed right-0 top-0 z-[101] flex h-full w-full max-w-md flex-col border-l border-white/10 bg-[#111] shadow-xl animate-cart-panel"
         role="dialog"
         aria-modal="true"
         aria-label="Koszyk"
       >
-        <div className="flex items-center justify-between border-b border-black/10 p-4">
-          <h2 className="text-lg font-semibold text-black">Koszyk</h2>
+        <div className="flex items-center justify-between border-b border-white/10 p-4">
+          <h2 className="text-lg font-semibold text-white">Koszyk</h2>
           <button
             type="button"
             onClick={onClose}
-            className="rounded-full p-2 text-black/60 hover:bg-black/5 hover:text-black"
+            className="rounded-full p-2 text-white/60 hover:bg-white/10 hover:text-white"
             aria-label="Zamknij koszyk"
           >
             <svg
@@ -61,19 +61,19 @@ export default function CartMenu({ isOpen, onClose }: CartMenuProps) {
         </div>
         <div className="flex-1 overflow-y-auto p-4">
           {items.length === 0 ? (
-            <p className="text-black/55">Twój koszyk jest pusty.</p>
+            <p className="text-white/55">Twój koszyk jest pusty.</p>
           ) : (
             <ul className="space-y-3">
               {items.map((item) => (
                 <li
                   key={item.id}
-                  className="flex items-center justify-between gap-3 rounded-xl border border-black/10 bg-black/[0.02] p-3"
+                  className="flex items-center justify-between gap-3 rounded-xl border border-white/10 bg-white/5 p-3"
                 >
                   <div className="min-w-0 flex-1">
-                    <p className="font-medium text-black">
+                    <p className="font-medium text-white">
                       {item.name || "Produkt"}
                     </p>
-                    <p className="text-sm text-black/55">{item.price}</p>
+                    <p className="text-sm text-white/55">{item.price}</p>
                   </div>
                   <div className="flex items-center gap-1">
                     <button
@@ -81,7 +81,7 @@ export default function CartMenu({ isOpen, onClose }: CartMenuProps) {
                       onClick={() =>
                         updateQuantity(item.id, item.quantity - 1)
                       }
-                      className="rounded-full p-1.5 text-black/60 hover:bg-black/5 hover:text-black"
+                      className="rounded-full p-1.5 text-white/60 hover:bg-white/10 hover:text-white"
                       aria-label="Zmniejsz ilość"
                     >
                       −
@@ -94,7 +94,7 @@ export default function CartMenu({ isOpen, onClose }: CartMenuProps) {
                       onClick={() =>
                         updateQuantity(item.id, item.quantity + 1)
                       }
-                      className="rounded-full p-1.5 text-black/60 hover:bg-black/5 hover:text-black"
+                      className="rounded-full p-1.5 text-white/60 hover:bg-white/10 hover:text-white"
                       aria-label="Zwiększ ilość"
                     >
                       +
@@ -103,7 +103,7 @@ export default function CartMenu({ isOpen, onClose }: CartMenuProps) {
                   <button
                     type="button"
                     onClick={() => removeItem(item.id)}
-                    className="rounded-full p-1.5 text-black/50 hover:bg-black/5 hover:text-black"
+                    className="rounded-full p-1.5 text-white/50 hover:bg-white/10 hover:text-white"
                     aria-label="Usuń z koszyka"
                   >
                     <svg
@@ -123,15 +123,15 @@ export default function CartMenu({ isOpen, onClose }: CartMenuProps) {
           )}
         </div>
         {items.length > 0 && (
-          <div className="border-t border-black/10 p-4 space-y-3">
-            <p className="flex justify-between text-base font-semibold text-black">
+          <div className="border-t border-white/10 p-4 space-y-3">
+            <p className="flex justify-between text-base font-semibold text-white">
               <span>Suma:</span>
               <span>{totalPrice}</span>
             </p>
             <Link
               href="/checkout"
               onClick={closeCart}
-              className="block w-full rounded-full bg-black py-3 text-center text-sm font-medium text-white transition-all duration-200 hover:scale-[1.02] hover:bg-black/88"
+              className="block w-full rounded-full bg-white py-3 text-center text-sm font-medium text-black transition-all duration-200 hover:scale-[1.02] hover:bg-white/90"
             >
               Kup
             </Link>

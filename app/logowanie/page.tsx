@@ -47,14 +47,14 @@ export default function LogowaniePage() {
   }
 
   return (
-    <div className="page-backdrop min-h-screen text-black">
+    <div className="page-backdrop page-home-dark min-h-screen text-white">
       <div className="relative z-10 flex min-h-screen flex-col">
         {/* Header */}
-        <header className="sticky top-0 z-50 border-b border-black/5 bg-white/70 backdrop-blur-xl">
+        <header className="sticky top-0 z-50 border-b border-white/10 bg-black/40 backdrop-blur-xl">
           <div className="mx-auto flex h-16 max-w-5xl items-center justify-between px-6 sm:px-8">
             <Link
               href="/"
-              className="text-sm font-medium text-black hover:opacity-70 transition-opacity duration-200"
+              className="text-sm font-medium text-white/90 hover:text-white transition-opacity duration-200"
             >
               Sklep
             </Link>
@@ -63,9 +63,9 @@ export default function LogowaniePage() {
 
         <main className="flex-1 flex items-center justify-center px-6 py-16">
           <div className="w-full max-w-md">
-            <div className="rounded-3xl border border-black/5 bg-white p-8 shadow-[0_1px_3px_rgba(0,0,0,0.04)] sm:p-10">
+            <div className="rounded-3xl border border-white/10 bg-white/5 p-8 shadow-2xl backdrop-blur-sm sm:p-10">
               {/* Tabs */}
-              <div className="flex gap-1 rounded-full border border-black/8 bg-black/[0.02] p-1">
+              <div className="flex gap-1 rounded-full border border-white/10 bg-white/5 p-1">
                 <button
                   onClick={() => {
                     setIsLogin(true);
@@ -74,8 +74,8 @@ export default function LogowaniePage() {
                   }}
                   className={`flex-1 rounded-full py-2.5 text-sm font-medium transition-all duration-200 ${
                     isLogin
-                      ? "bg-black text-white shadow-sm"
-                      : "text-black/60 hover:text-black"
+                      ? "bg-white text-black shadow-sm"
+                      : "text-white/60 hover:text-white"
                   }`}
                 >
                   Logowanie
@@ -88,8 +88,8 @@ export default function LogowaniePage() {
                   }}
                   className={`flex-1 rounded-full py-2.5 text-sm font-medium transition-all duration-200 ${
                     !isLogin
-                      ? "bg-black text-white shadow-sm"
-                      : "text-black/60 hover:text-black"
+                      ? "bg-white text-black shadow-sm"
+                      : "text-white/60 hover:text-white"
                   }`}
                 >
                   Rejestracja
@@ -100,7 +100,7 @@ export default function LogowaniePage() {
                 <div>
                   <label
                     htmlFor="email"
-                    className="block text-sm font-medium text-black/70 mb-2"
+                    className="block text-sm font-medium text-white/70 mb-2"
                   >
                     Adres e-mail
                   </label>
@@ -110,7 +110,7 @@ export default function LogowaniePage() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
-                    className="w-full rounded-full border border-black/12 bg-black/[0.02] px-5 py-3.5 text-black placeholder:text-black/40 focus:outline-none focus:ring-2 focus:ring-black/15"
+                    className="w-full rounded-full border border-white/15 bg-white/5 px-5 py-3.5 text-white placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-white/20"
                     placeholder="jan@przyklad.pl"
                   />
                 </div>
@@ -118,7 +118,7 @@ export default function LogowaniePage() {
                 <div>
                   <label
                     htmlFor="password"
-                    className="block text-sm font-medium text-black/70 mb-2"
+                    className="block text-sm font-medium text-white/70 mb-2"
                   >
                     Hasło
                   </label>
@@ -129,19 +129,19 @@ export default function LogowaniePage() {
                     onChange={(e) => setPassword(e.target.value)}
                     required
                     minLength={6}
-                    className="w-full rounded-full border border-black/12 bg-black/[0.02] px-5 py-3.5 text-black placeholder:text-black/40 focus:outline-none focus:ring-2 focus:ring-black/15"
+                    className="w-full rounded-full border border-white/15 bg-white/5 px-5 py-3.5 text-white placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-white/20"
                     placeholder="Minimum 6 znaków"
                   />
                 </div>
 
                 {error && (
-                  <p className="text-sm text-red-600 bg-red-50 rounded-2xl px-4 py-3">
+                  <p className="text-sm text-red-400 bg-red-950/30 rounded-2xl px-4 py-3">
                     {error}
                   </p>
                 )}
 
                 {message && (
-                  <p className="text-sm text-green-700 bg-green-50 rounded-2xl px-4 py-3">
+                  <p className="text-sm text-green-400 bg-green-950/30 rounded-2xl px-4 py-3">
                     {message}
                   </p>
                 )}
@@ -149,7 +149,7 @@ export default function LogowaniePage() {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full rounded-full bg-black px-7 py-3.5 text-sm font-medium text-white shadow-sm hover:bg-black/88 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full rounded-full bg-white px-7 py-3.5 text-sm font-medium text-black shadow-sm hover:bg-white/90 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {loading
                     ? "Ładowanie..."

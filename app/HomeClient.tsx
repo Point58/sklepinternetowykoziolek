@@ -348,7 +348,7 @@ export default function HomeClient({ user }: { user: boolean }) {
                 style={{ animationDelay: "0.4s", opacity: 0 }}
               >
                 <Link
-                  href="/kategorie"
+                  href="/oferta"
                   className="inline-block rounded-full bg-white px-6 py-3 text-sm font-medium text-black transition-all duration-200 hover:scale-105 hover:bg-white/90"
                 >
                   Przeglądaj kategorie
