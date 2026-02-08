@@ -1,7 +1,5 @@
 import Link from "next/link";
 import Particles from "../components/Particles";
-import ProductCard from "../components/ProductCard";
-import CartTrigger from "../components/CartTrigger";
 
 const navLinks = [
   { href: "/", label: "Strona główna" },
@@ -9,7 +7,7 @@ const navLinks = [
   { href: "/kontakt", label: "Kontakt" },
 ];
 
-export default function OfertaPage() {
+export default function KontaktPage() {
   return (
     <div className="page-backdrop page-home-dark min-h-screen text-white">
       <Particles variant="light" />
@@ -17,7 +15,7 @@ export default function OfertaPage() {
         <header className="sticky top-0 z-50 border-b border-white/10 bg-black/40 backdrop-blur-xl">
           <div className="mx-auto flex h-16 max-w-5xl items-center justify-between px-6 sm:px-8">
             <Link
-              href="/oferta"
+              href="/"
               className="inline-block text-sm font-medium text-white/90 transition-all duration-200 hover:scale-105 hover:text-white"
             >
               Sklep
@@ -32,30 +30,18 @@ export default function OfertaPage() {
                   {link.label}
                 </Link>
               ))}
-              <CartTrigger />
             </nav>
           </div>
         </header>
 
         <main className="flex-1 px-6 py-20 sm:px-8 sm:py-28">
-          <div className="mx-auto max-w-2xl">
+          <div className="mx-auto max-w-2xl text-center">
             <h1 className="text-3xl font-semibold tracking-tight text-white sm:text-4xl">
-              Oferta
+              Kontakt
             </h1>
             <p className="mt-6 text-white/60">
-              Wkrótce tutaj pojawią się opcje.
+              Strona w budowie. Wkrótce pojawią się tu dane kontaktowe.
             </p>
-
-            <div className="mt-10">
-              <ProductCard
-                product={{
-                  id: "przykladowy-1",
-                  name: "",
-                  price: "29,99 zł",
-                }}
-              />
-            </div>
-
             <Link
               href="/"
               className="mt-10 inline-block text-sm font-medium text-white/70 transition-all duration-200 hover:scale-105 hover:text-white"

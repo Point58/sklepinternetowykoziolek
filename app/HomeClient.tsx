@@ -2,11 +2,12 @@
 
 import Link from "next/link";
 import Particles from "./components/Particles";
+import { useCart } from "./components/CartContext";
 import { useEffect, useRef, useState } from "react";
 
 const navLinks = [
   { href: "/", label: "Strona główna" },
-  { href: "/kategorie", label: "Kategorie" },
+  { href: "/oferta", label: "Oferta" },
   { href: "/kontakt", label: "Kontakt" },
 ];
 
@@ -254,6 +255,7 @@ function SectionPanel({ sectionId }: { sectionId: string }) {
 }
 
 export default function HomeClient({ user }: { user: boolean }) {
+  const { openCart, totalItemsCount } = useCart();
   const [activeSection, setActiveSection] = useState(sections[0].id);
   const sectionRefs = useRef<(HTMLDivElement | null)[]>([]);
 
@@ -310,12 +312,18 @@ export default function HomeClient({ user }: { user: boolean }) {
                   {link.label}
                 </Link>
               ))}
-              <Link
-                href="/koszyk"
-                className="text-sm text-white/70 transition-all duration-200 hover:scale-105 hover:text-white"
+              <button
+                type="button"
+                onClick={openCart}
+                className="relative inline-flex items-center gap-1.5 text-sm text-white/70 transition-all duration-200 hover:scale-105 hover:text-white"
               >
                 Koszyk
-              </Link>
+                {totalItemsCount > 0 && (
+                  <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-white px-1.5 text-xs font-medium text-black">
+                    {totalItemsCount}
+                  </span>
+                )}
+              </button>
               <Link
                 href={user ? "/profil" : "/logowanie"}
                 className="text-sm text-white/70 transition-all duration-200 hover:scale-105 hover:text-white"

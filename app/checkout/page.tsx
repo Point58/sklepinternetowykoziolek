@@ -8,7 +8,7 @@ import Particles from "../components/Particles";
 
 const navLinks = [
   { href: "/", label: "Strona główna" },
-  { href: "/kategorie", label: "Kategorie" },
+  { href: "/oferta", label: "Oferta" },
   { href: "/kontakt", label: "Kontakt" },
 ];
 
