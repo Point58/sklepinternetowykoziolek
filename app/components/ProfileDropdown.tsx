@@ -122,19 +122,19 @@ export default function ProfileDropdown({ user }: { user: User | null }) {
       </button>
 
       {open && createPortal(
-        <div className="animate-overlay-fade fixed inset-0 z-[9999] flex" style={{ background: "#ffffff" }}>
-          {/* ── Left sidebar ── */}
-          <aside className="flex w-72 flex-col border-r border-black/6 bg-black/[0.02] px-5 py-8">
+        <div className="animate-overlay-fade fixed inset-0 z-[9999] flex" style={{ background: "#0f0f0f" }}>
+          {/* Left sidebar */}
+          <aside className="flex w-72 flex-col border-r border-white/10 bg-white/[0.02] px-5 py-8">
             {/* User info */}
             <div className="flex items-center gap-3.5 px-3 pb-8">
-              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-black text-sm font-semibold text-white">
+              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-white text-sm font-semibold text-black">
                 {initial}
               </div>
               <div className="min-w-0">
-                <p className="truncate text-sm font-medium text-black">
+                <p className="truncate text-sm font-medium text-white">
                   Moje konto
                 </p>
-                <p className="truncate text-xs text-black/40">
+                <p className="truncate text-xs text-white/40">
                   {user.email}
                 </p>
               </div>
@@ -147,9 +147,9 @@ export default function ProfileDropdown({ user }: { user: User | null }) {
                   key={item.href}
                   href={item.href}
                   onClick={() => setOpen(false)}
-                  className="flex items-center gap-3.5 rounded-xl px-3 py-3 text-sm text-black/65 transition-colors duration-150 hover:bg-black/5 hover:text-black"
+                  className="flex items-center gap-3.5 rounded-xl px-3 py-3 text-sm text-white/65 transition-colors duration-150 hover:bg-white/5 hover:text-white"
                 >
-                  <span className="text-black/35">{item.icon}</span>
+                  <span className="text-white/35">{item.icon}</span>
                   {item.label}
                 </Link>
               ))}
@@ -159,7 +159,7 @@ export default function ProfileDropdown({ user }: { user: User | null }) {
             <Link
               href="/"
               onClick={() => setOpen(false)}
-              className="flex items-center gap-3.5 rounded-xl px-3 py-3 text-sm text-black/45 transition-colors duration-150 hover:bg-black/5 hover:text-black"
+              className="flex items-center gap-3.5 rounded-xl px-3 py-3 text-sm text-white/45 transition-colors duration-150 hover:bg-white/5 hover:text-white"
             >
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
                 <line x1="19" y1="12" x2="5" y2="12" />
@@ -169,13 +169,13 @@ export default function ProfileDropdown({ user }: { user: User | null }) {
             </Link>
           </aside>
 
-          {/* ── Right content area ── */}
+          {/* Right content area */}
           <div className="flex flex-1 flex-col">
             {/* Top bar with close */}
             <div className="flex items-center justify-end px-8 py-6">
               <button
                 onClick={() => setOpen(false)}
-                className="flex h-10 w-10 items-center justify-center rounded-full text-black/40 transition-colors duration-150 hover:bg-black/5 hover:text-black"
+                className="flex h-10 w-10 items-center justify-center rounded-full text-white/40 transition-colors duration-150 hover:bg-white/5 hover:text-white"
                 aria-label="Zamknij"
               >
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -187,10 +187,10 @@ export default function ProfileDropdown({ user }: { user: User | null }) {
 
             {/* Content */}
             <div className="flex flex-1 flex-col px-10 pb-10 sm:px-16">
-              <h1 className="text-2xl font-semibold tracking-tight text-black">
+              <h1 className="text-2xl font-semibold tracking-tight text-white">
                 Profil
               </h1>
-              <p className="mt-2 text-sm text-black/45">
+              <p className="mt-2 text-sm text-white/45">
                 Zarządzaj swoim kontem i ustawieniami.
               </p>
 
@@ -199,9 +199,9 @@ export default function ProfileDropdown({ user }: { user: User | null }) {
                 {/* Logout card */}
                 <button
                   onClick={handleLogout}
-                  className="group flex flex-col items-start gap-3 rounded-2xl border border-black/6 bg-white p-6 text-left shadow-[0_1px_3px_rgba(0,0,0,0.04)] transition-all duration-200 hover:border-red-500/20 hover:shadow-[0_2px_12px_rgba(239,68,68,0.08)]"
+                  className="group flex flex-col items-start gap-3 rounded-2xl border border-white/10 bg-white/[0.03] p-6 text-left transition-all duration-200 hover:border-red-500/30 hover:bg-red-500/5"
                 >
-                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-red-50 text-red-500/70 transition-colors duration-200 group-hover:bg-red-100 group-hover:text-red-600">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-red-500/10 text-red-400/70 transition-colors duration-200 group-hover:bg-red-500/20 group-hover:text-red-400">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
                       <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
                       <polyline points="16 17 21 12 16 7" />
@@ -209,8 +209,8 @@ export default function ProfileDropdown({ user }: { user: User | null }) {
                     </svg>
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-black">Wyloguj się</p>
-                    <p className="mt-0.5 text-xs text-black/40">Zakończ bieżącą sesję</p>
+                    <p className="text-sm font-medium text-white">Wyloguj się</p>
+                    <p className="mt-0.5 text-xs text-white/40">Zakończ bieżącą sesję</p>
                   </div>
                 </button>
 
@@ -218,17 +218,17 @@ export default function ProfileDropdown({ user }: { user: User | null }) {
                 <Link
                   href="/profil"
                   onClick={() => setOpen(false)}
-                  className="group flex flex-col items-start gap-3 rounded-2xl border border-black/6 bg-white p-6 text-left shadow-[0_1px_3px_rgba(0,0,0,0.04)] transition-all duration-200 hover:border-black/12 hover:shadow-[0_2px_12px_rgba(0,0,0,0.06)]"
+                  className="group flex flex-col items-start gap-3 rounded-2xl border border-white/10 bg-white/[0.03] p-6 text-left transition-all duration-200 hover:border-white/20 hover:bg-white/[0.06]"
                 >
-                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-black/[0.04] text-black/50 transition-colors duration-200 group-hover:bg-black/[0.07] group-hover:text-black/70">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/5 text-white/50 transition-colors duration-200 group-hover:bg-white/10 group-hover:text-white/70">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
                       <path d="M17 3a2.85 2.85 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" />
                       <path d="m15 5 4 4" />
                     </svg>
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-black">Edytuj profil</p>
-                    <p className="mt-0.5 text-xs text-black/40">Zmień dane osobowe</p>
+                    <p className="text-sm font-medium text-white">Edytuj profil</p>
+                    <p className="mt-0.5 text-xs text-white/40">Zmień dane osobowe</p>
                   </div>
                 </Link>
 
@@ -236,17 +236,17 @@ export default function ProfileDropdown({ user }: { user: User | null }) {
                 <Link
                   href="/ustawienia"
                   onClick={() => setOpen(false)}
-                  className="group flex flex-col items-start gap-3 rounded-2xl border border-black/6 bg-white p-6 text-left shadow-[0_1px_3px_rgba(0,0,0,0.04)] transition-all duration-200 hover:border-black/12 hover:shadow-[0_2px_12px_rgba(0,0,0,0.06)]"
+                  className="group flex flex-col items-start gap-3 rounded-2xl border border-white/10 bg-white/[0.03] p-6 text-left transition-all duration-200 hover:border-white/20 hover:bg-white/[0.06]"
                 >
-                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-black/[0.04] text-black/50 transition-colors duration-200 group-hover:bg-black/[0.07] group-hover:text-black/70">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/5 text-white/50 transition-colors duration-200 group-hover:bg-white/10 group-hover:text-white/70">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
                       <rect width="18" height="11" x="3" y="11" rx="2" ry="2" />
                       <path d="M7 11V7a5 5 0 0 1 10 0v4" />
                     </svg>
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-black">Zmień hasło</p>
-                    <p className="mt-0.5 text-xs text-black/40">Zaktualizuj zabezpieczenia</p>
+                    <p className="text-sm font-medium text-white">Zmień hasło</p>
+                    <p className="mt-0.5 text-xs text-white/40">Zaktualizuj zabezpieczenia</p>
                   </div>
                 </Link>
               </div>
