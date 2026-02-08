@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/app/lib/supabase/server";
 import Link from "next/link";
+import ProfileDropdown from "@/app/components/ProfileDropdown";
 import LogoutButton from "./LogoutButton";
 
 export default async function ProfilPage() {
@@ -32,6 +33,7 @@ export default async function ProfilPage() {
               >
                 Strona główna
               </Link>
+              <ProfileDropdown user={user} />
             </nav>
           </div>
         </header>

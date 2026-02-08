@@ -2,7 +2,11 @@
 
 import Link from "next/link";
 import Particles from "./components/Particles";
+<<<<<<< HEAD
 import { useCart } from "./components/CartContext";
+=======
+import ProfileDropdown from "./components/ProfileDropdown";
+>>>>>>> 01f31748a1798ec8355c4aa50886ce2a672e223c
 import { useEffect, useRef, useState } from "react";
 
 const navLinks = [
@@ -254,8 +258,12 @@ function SectionPanel({ sectionId }: { sectionId: string }) {
   }
 }
 
+<<<<<<< HEAD
 export default function HomeClient({ user }: { user: boolean }) {
   const { openCart, totalItemsCount } = useCart();
+=======
+export default function HomeClient({ user }: { user: { email: string | null } | null }) {
+>>>>>>> 01f31748a1798ec8355c4aa50886ce2a672e223c
   const [activeSection, setActiveSection] = useState(sections[0].id);
   const sectionRefs = useRef<(HTMLDivElement | null)[]>([]);
 
@@ -318,6 +326,7 @@ export default function HomeClient({ user }: { user: boolean }) {
                 className="relative inline-flex items-center gap-1.5 text-sm text-white/70 transition-all duration-200 hover:scale-105 hover:text-white"
               >
                 Koszyk
+<<<<<<< HEAD
                 {totalItemsCount > 0 && (
                   <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-white px-1.5 text-xs font-medium text-black">
                     {totalItemsCount}
@@ -330,6 +339,10 @@ export default function HomeClient({ user }: { user: boolean }) {
               >
                 {user ? "Profil" : "Zaloguj się"}
               </Link>
+=======
+              </Link>
+              <ProfileDropdown user={user} />
+>>>>>>> 01f31748a1798ec8355c4aa50886ce2a672e223c
             </nav>
           </div>
         </header>
