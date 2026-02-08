@@ -38,7 +38,9 @@ function useParticles() {
   return particles;
 }
 
-export default function Particles() {
+type ParticlesProps = { variant?: "light" | "dark" };
+
+export default function Particles({ variant = "dark" }: ParticlesProps) {
   const particles = useParticles();
 
   if (particles.length === 0) return null;
@@ -51,7 +53,7 @@ export default function Particles() {
       {particles.map((p) => (
         <div
           key={p.id}
-          className="absolute rounded-full bg-black/40 will-change-transform"
+          className={`absolute rounded-full will-change-transform ${variant === "light" ? "bg-white/30" : "bg-black/40"}`}
           style={{
             left: `${p.x}%`,
             top: `${p.y}%`,

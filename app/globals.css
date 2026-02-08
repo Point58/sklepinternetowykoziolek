@@ -45,6 +45,19 @@ body {
   z-index: 0;
 }
 
+/* Ciemny styl strony głównej (layout dwukolumnowy, workflow) */
+.page-backdrop.page-home-dark {
+  background-color: #0f0f0f;
+  background-image:
+    radial-gradient(ellipse 70% 60% at 20% 30%, rgba(255, 255, 255, 0.04), transparent 50%),
+    radial-gradient(ellipse 50% 40% at 80% 70%, rgba(255, 255, 255, 0.03), transparent 45%);
+}
+
+.page-backdrop.page-home-dark::before {
+  background-image: radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.05) 1px, transparent 0);
+  background-size: 36px 36px;
+}
+
 /* Animacje wejścia */
 @keyframes fade-in-up {
   from {
@@ -72,6 +85,25 @@ body {
 
 .animate-fade-in {
   animation: fade-in 0.5s ease-out forwards;
+}
+
+/* Animacja wejścia koszyka */
+@keyframes cart-backdrop-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes cart-panel-slide-in {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+
+.animate-cart-backdrop {
+  animation: cart-backdrop-in 0.25s ease-out forwards;
+}
+
+.animate-cart-panel {
+  animation: cart-panel-slide-in 0.3s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
 /* Cząsteczki – przelatują po całej stronie (tam i z powrotem) */
