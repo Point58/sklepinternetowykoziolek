@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 
 interface User {
   email?: string | null;
+  isAdmin?: boolean;
 }
 
 const sidebarItems = [
@@ -143,6 +144,22 @@ export default function ProfileDropdown({ user }: { user: User | null }) {
 
             {/* Navigation */}
             <nav className="flex flex-1 flex-col gap-1">
+              {user?.isAdmin && (
+                <Link
+                  href="/admin"
+                  onClick={() => setOpen(false)}
+                  className="flex items-center gap-3.5 rounded-xl px-3 py-3 text-sm text-amber-400/80 transition-colors duration-150 hover:bg-amber-500/10 hover:text-amber-300"
+                >
+                  <span className="text-amber-400/50">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M12 2L2 7l10 5 10-5-10-5z" />
+                      <path d="M2 17l10 5 10-5" />
+                      <path d="M2 12l10 5 10-5" />
+                    </svg>
+                  </span>
+                  Panel admina
+                </Link>
+              )}
               {sidebarItems.map((item) => (
                 <button
                   key={item.href}

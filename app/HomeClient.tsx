@@ -255,7 +255,7 @@ function SectionPanel({ sectionId }: { sectionId: string }) {
   }
 }
 
-export default function HomeClient({ user }: { user: { email: string | null } | null }) {
+export default function HomeClient({ user }: { user: { email: string | null; isAdmin?: boolean } | null }) {
   const { openCart, totalItemsCount } = useCart();
   const [activeSection, setActiveSection] = useState(sections[0].id);
   const sectionRefs = useRef<(HTMLDivElement | null)[]>([]);
@@ -313,6 +313,14 @@ export default function HomeClient({ user }: { user: { email: string | null } | 
                   {link.label}
                 </Link>
               ))}
+              {user?.isAdmin && (
+                <Link
+                  href="/admin"
+                  className="inline-block text-sm text-amber-400/80 transition-all duration-200 hover:scale-105 hover:text-amber-300"
+                >
+                  Panel admina
+                </Link>
+              )}
               <button
                 type="button"
                 onClick={openCart}

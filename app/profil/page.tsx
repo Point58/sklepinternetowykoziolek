@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/app/lib/supabase/server";
+import { isAdmin } from "@/app/lib/supabase/roles";
 import Link from "next/link";
 import ProfileDropdown from "@/app/components/ProfileDropdown";
 
@@ -27,6 +28,7 @@ export default async function ProfilPage() {
     { label: "Oferta", href: "/oferta" },
     { label: "Kontakt", href: "/kontakt" },
   ];
+  const userIsAdmin = await isAdmin(user.id);
 
   return (
     <div className="page-backdrop page-home-dark min-h-screen text-white">
@@ -50,7 +52,7 @@ export default async function ProfilPage() {
                   {link.label}
                 </Link>
               ))}
-              <ProfileDropdown user={user} />
+              <ProfileDropdown user={{ ...user, isAdmin: userIsAdmin }} />
             </nav>
           </div>
         </header>

@@ -1,4 +1,5 @@
 import { createClient } from "@/app/lib/supabase/server";
+import { isAdmin } from "@/app/lib/supabase/roles";
 import HomeClient from "./HomeClient";
 
 export default async function Home() {
@@ -7,5 +8,7 @@ export default async function Home() {
     data: { user },
   } = await supabase.auth.getUser();
 
-  return <HomeClient user={user ? { email: user.email ?? null } : null} />;
+  const userIsAdmin = user ? await isAdmin(user.id) : false;
+
+  return <HomeClient user={user ? { email: user.email ?? null, isAdmin: userIsAdmin } : null} />;
 }
