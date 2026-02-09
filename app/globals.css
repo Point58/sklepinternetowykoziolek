@@ -115,6 +115,15 @@ body {
   animation: overlay-fade 0.2s ease-out forwards;
 }
 
+@keyframes overlay-fade-out {
+  from { opacity: 1; transform: scale(1); }
+  to { opacity: 0; transform: scale(0.98); }
+}
+
+.animate-overlay-fade-out {
+  animation: overlay-fade-out 0.25s cubic-bezier(0.4, 0, 1, 1) forwards;
+}
+
 /* Cząsteczki – przelatują po całej stronie (tam i z powrotem) */
 @keyframes particle-fly-1 {
   0%, 100% { transform: translate(0, 0); opacity: 0.35; }

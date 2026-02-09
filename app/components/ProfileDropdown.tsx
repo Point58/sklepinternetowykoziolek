@@ -4,23 +4,12 @@ import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { createClient } from "@/app/lib/supabase/client";
 
 interface User {
   email?: string | null;
 }
 
 const sidebarItems = [
-  {
-    label: "Moje konto",
-    href: "/profil",
-    icon: (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-        <circle cx="12" cy="8" r="4" />
-        <path d="M20 21a8 8 0 1 0-16 0" />
-      </svg>
-    ),
-  },
   {
     label: "Zamówienia",
     href: "/zamowienia",
@@ -67,8 +56,9 @@ const sidebarItems = [
 
 export default function ProfileDropdown({ user }: { user: User | null }) {
   const [open, setOpen] = useState(false);
+  const [closing, setClosing] = useState(false);
+  const [pendingHref, setPendingHref] = useState<string | null>(null);
   const router = useRouter();
-  const supabase = createClient();
 
   useEffect(() => {
     if (open) {
@@ -104,11 +94,18 @@ export default function ProfileDropdown({ user }: { user: User | null }) {
 
   const initial = (user.email?.[0] ?? "U").toUpperCase();
 
-  async function handleLogout() {
-    setOpen(false);
-    await supabase.auth.signOut();
-    router.push("/");
-    router.refresh();
+  function handleNavigate(href: string) {
+    setPendingHref(href);
+    setClosing(true);
+  }
+
+  function handleAnimationEnd() {
+    if (closing && pendingHref) {
+      setOpen(false);
+      setClosing(false);
+      router.push(pendingHref);
+      setPendingHref(null);
+    }
   }
 
   return (
@@ -122,7 +119,11 @@ export default function ProfileDropdown({ user }: { user: User | null }) {
       </button>
 
       {open && createPortal(
-        <div className="animate-overlay-fade fixed inset-0 z-[9999] flex" style={{ background: "#0f0f0f" }}>
+        <div
+          className={`${closing ? "animate-overlay-fade-out" : "animate-overlay-fade"} fixed inset-0 z-[9999] flex`}
+          style={{ background: "#0f0f0f" }}
+          onAnimationEnd={handleAnimationEnd}
+        >
           {/* Left sidebar */}
           <aside className="flex w-72 flex-col border-r border-white/10 bg-white/[0.02] px-5 py-8">
             {/* User info */}
@@ -143,22 +144,20 @@ export default function ProfileDropdown({ user }: { user: User | null }) {
             {/* Navigation */}
             <nav className="flex flex-1 flex-col gap-1">
               {sidebarItems.map((item) => (
-                <Link
+                <button
                   key={item.href}
-                  href={item.href}
-                  onClick={() => setOpen(false)}
+                  onClick={() => handleNavigate(item.href)}
                   className="flex items-center gap-3.5 rounded-xl px-3 py-3 text-sm text-white/65 transition-colors duration-150 hover:bg-white/5 hover:text-white"
                 >
                   <span className="text-white/35">{item.icon}</span>
                   {item.label}
-                </Link>
+                </button>
               ))}
             </nav>
 
             {/* Back to shop */}
-            <Link
-              href="/"
-              onClick={() => setOpen(false)}
+            <button
+              onClick={() => handleNavigate("/")}
               className="flex items-center gap-3.5 rounded-xl px-3 py-3 text-sm text-white/45 transition-colors duration-150 hover:bg-white/5 hover:text-white"
             >
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
@@ -166,7 +165,7 @@ export default function ProfileDropdown({ user }: { user: User | null }) {
                 <polyline points="12 19 5 12 12 5" />
               </svg>
               Wróć do sklepu
-            </Link>
+            </button>
           </aside>
 
           {/* Right content area */}
@@ -196,59 +195,92 @@ export default function ProfileDropdown({ user }: { user: User | null }) {
 
               {/* Action cards */}
               <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                {/* Logout card */}
+                {/* Moje konto card */}
                 <button
-                  onClick={handleLogout}
-                  className="group flex flex-col items-start gap-3 rounded-2xl border border-white/10 bg-white/[0.03] p-6 text-left transition-all duration-200 hover:border-red-500/30 hover:bg-red-500/5"
+                  onClick={() => handleNavigate("/profil")}
+                  className="group flex flex-col items-start gap-3 rounded-2xl border border-white/10 bg-white/[0.03] p-6 text-left transition-all duration-200 hover:border-white/20 hover:bg-white/[0.06]"
                 >
-                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-red-500/10 text-red-400/70 transition-colors duration-200 group-hover:bg-red-500/20 group-hover:text-red-400">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/5 text-white/50 transition-colors duration-200 group-hover:bg-white/10 group-hover:text-white/70">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
-                      <polyline points="16 17 21 12 16 7" />
-                      <line x1="21" y1="12" x2="9" y2="12" />
+                      <circle cx="12" cy="8" r="4" />
+                      <path d="M20 21a8 8 0 1 0-16 0" />
                     </svg>
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-white">Wyloguj się</p>
-                    <p className="mt-0.5 text-xs text-white/40">Zakończ bieżącą sesję</p>
+                    <p className="text-sm font-medium text-white">Moje konto</p>
+                    <p className="mt-0.5 text-xs text-white/40">Zarządzaj danymi osobowymi</p>
                   </div>
                 </button>
 
-                {/* Edit profile card */}
-                <Link
-                  href="/profil"
-                  onClick={() => setOpen(false)}
+                {/* Zamówienia card */}
+                <button
+                  onClick={() => handleNavigate("/zamowienia")}
                   className="group flex flex-col items-start gap-3 rounded-2xl border border-white/10 bg-white/[0.03] p-6 text-left transition-all duration-200 hover:border-white/20 hover:bg-white/[0.06]"
                 >
                   <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/5 text-white/50 transition-colors duration-200 group-hover:bg-white/10 group-hover:text-white/70">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M17 3a2.85 2.85 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" />
-                      <path d="m15 5 4 4" />
+                      <path d="M16.5 9.4 7.55 4.24" />
+                      <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
+                      <polyline points="3.29 7 12 12 20.71 7" />
+                      <line x1="12" y1="22" x2="12" y2="12" />
                     </svg>
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-white">Edytuj profil</p>
-                    <p className="mt-0.5 text-xs text-white/40">Zmień dane osobowe</p>
+                    <p className="text-sm font-medium text-white">Zamówienia</p>
+                    <p className="mt-0.5 text-xs text-white/40">Sprawdź historię zakupów</p>
                   </div>
-                </Link>
+                </button>
 
-                {/* Change password card */}
-                <Link
-                  href="/ustawienia"
-                  onClick={() => setOpen(false)}
+                {/* Lista życzeń card */}
+                <button
+                  onClick={() => handleNavigate("/lista-zyczen")}
                   className="group flex flex-col items-start gap-3 rounded-2xl border border-white/10 bg-white/[0.03] p-6 text-left transition-all duration-200 hover:border-white/20 hover:bg-white/[0.06]"
                 >
                   <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/5 text-white/50 transition-colors duration-200 group-hover:bg-white/10 group-hover:text-white/70">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                      <rect width="18" height="11" x="3" y="11" rx="2" ry="2" />
-                      <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                      <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
                     </svg>
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-white">Zmień hasło</p>
-                    <p className="mt-0.5 text-xs text-white/40">Zaktualizuj zabezpieczenia</p>
+                    <p className="text-sm font-medium text-white">Lista życzeń</p>
+                    <p className="mt-0.5 text-xs text-white/40">Zapisane produkty</p>
                   </div>
-                </Link>
+                </button>
+
+                {/* Ustawienia card */}
+                <button
+                  onClick={() => handleNavigate("/ustawienia")}
+                  className="group flex flex-col items-start gap-3 rounded-2xl border border-white/10 bg-white/[0.03] p-6 text-left transition-all duration-200 hover:border-white/20 hover:bg-white/[0.06]"
+                >
+                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/5 text-white/50 transition-colors duration-200 group-hover:bg-white/10 group-hover:text-white/70">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z" />
+                      <circle cx="12" cy="12" r="3" />
+                    </svg>
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-white">Ustawienia</p>
+                    <p className="mt-0.5 text-xs text-white/40">Hasło, e-mail i zabezpieczenia</p>
+                  </div>
+                </button>
+
+                {/* Pomoc card */}
+                <button
+                  onClick={() => handleNavigate("/pomoc")}
+                  className="group flex flex-col items-start gap-3 rounded-2xl border border-white/10 bg-white/[0.03] p-6 text-left transition-all duration-200 hover:border-white/20 hover:bg-white/[0.06]"
+                >
+                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/5 text-white/50 transition-colors duration-200 group-hover:bg-white/10 group-hover:text-white/70">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                      <circle cx="12" cy="12" r="10" />
+                      <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+                      <path d="M12 17h.01" />
+                    </svg>
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-white">Pomoc</p>
+                    <p className="mt-0.5 text-xs text-white/40">Centrum pomocy i FAQ</p>
+                  </div>
+                </button>
               </div>
             </div>
           </div>
