@@ -3,6 +3,7 @@ import { createClient } from "@/app/lib/supabase/server";
 import { isAdmin } from "@/app/lib/supabase/roles";
 import Link from "next/link";
 import ProfileDropdown from "@/app/components/ProfileDropdown";
+import KoszykCard from "@/app/components/KoszykCard";
 
 export default async function ProfilPage() {
   const supabase = await createClient();
@@ -128,6 +129,8 @@ export default async function ProfilPage() {
 
               {/* Quick links */}
               <section className="grid gap-4 sm:grid-cols-2">
+                <KoszykCard />
+
                 <Link
                   href="/zamowienia"
                   className="group flex items-center gap-4 rounded-2xl border border-white/10 bg-white/[0.03] p-5 transition-all duration-200 hover:border-white/20 hover:bg-white/[0.06]"

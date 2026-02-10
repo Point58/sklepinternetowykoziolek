@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useCart } from "./CartContext";
 
 interface User {
   email?: string | null;
@@ -11,6 +12,17 @@ interface User {
 }
 
 const sidebarItems = [
+  {
+    label: "Koszyk",
+    href: "__cart__",
+    icon: (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="8" cy="21" r="1" />
+        <circle cx="19" cy="21" r="1" />
+        <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12" />
+      </svg>
+    ),
+  },
   {
     label: "Zamówienia",
     href: "/zamowienia",
@@ -60,6 +72,7 @@ export default function ProfileDropdown({ user }: { user: User | null }) {
   const [closing, setClosing] = useState(false);
   const [pendingHref, setPendingHref] = useState<string | null>(null);
   const router = useRouter();
+  const { openCart, totalItemsCount } = useCart();
 
   useEffect(() => {
     if (open) {
@@ -102,10 +115,15 @@ export default function ProfileDropdown({ user }: { user: User | null }) {
 
   function handleAnimationEnd() {
     if (closing && pendingHref) {
+      const href = pendingHref;
       setOpen(false);
       setClosing(false);
-      router.push(pendingHref);
       setPendingHref(null);
+      if (href === "__cart__") {
+        openCart();
+      } else {
+        router.push(href);
+      }
     }
   }
 
@@ -168,6 +186,11 @@ export default function ProfileDropdown({ user }: { user: User | null }) {
                 >
                   <span className="text-white/35">{item.icon}</span>
                   {item.label}
+                  {item.href === "__cart__" && totalItemsCount > 0 && (
+                    <span className="ml-auto flex h-5 min-w-5 items-center justify-center rounded-full bg-white px-1.5 text-xs font-medium text-black">
+                      {totalItemsCount}
+                    </span>
+                  )}
                 </button>
               ))}
             </nav>
@@ -212,6 +235,31 @@ export default function ProfileDropdown({ user }: { user: User | null }) {
 
               {/* Action cards */}
               <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                {/* Koszyk card */}
+                <button
+                  onClick={() => handleNavigate("__cart__")}
+                  className="group flex flex-col items-start gap-3 rounded-2xl border border-white/10 bg-white/[0.03] p-6 text-left transition-all duration-200 hover:border-white/20 hover:bg-white/[0.06]"
+                >
+                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/5 text-white/50 transition-colors duration-200 group-hover:bg-white/10 group-hover:text-white/70">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                      <circle cx="8" cy="21" r="1" />
+                      <circle cx="19" cy="21" r="1" />
+                      <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12" />
+                    </svg>
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-white">
+                      Koszyk
+                      {totalItemsCount > 0 && (
+                        <span className="ml-2 inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-white px-1.5 text-xs font-medium text-black">
+                          {totalItemsCount}
+                        </span>
+                      )}
+                    </p>
+                    <p className="mt-0.5 text-xs text-white/40">Twoje produkty</p>
+                  </div>
+                </button>
+
                 {/* Moje konto card */}
                 <button
                   onClick={() => handleNavigate("/profil")}
