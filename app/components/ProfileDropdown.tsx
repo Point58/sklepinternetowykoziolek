@@ -5,6 +5,7 @@ import { createPortal } from "react-dom";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCart } from "./CartContext";
+import { useWishlist } from "./WishlistContext";
 
 interface User {
   email?: string | null;
@@ -37,7 +38,7 @@ const sidebarItems = [
   },
   {
     label: "Lista życzeń",
-    href: "/lista-zyczen",
+    href: "__wishlist__",
     icon: (
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
         <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
@@ -73,6 +74,7 @@ export default function ProfileDropdown({ user }: { user: User | null }) {
   const [pendingHref, setPendingHref] = useState<string | null>(null);
   const router = useRouter();
   const { openCart, totalItemsCount } = useCart();
+  const { openWishlist, totalItemsCount: wishlistCount } = useWishlist();
 
   useEffect(() => {
     if (open) {
@@ -121,6 +123,8 @@ export default function ProfileDropdown({ user }: { user: User | null }) {
       setPendingHref(null);
       if (href === "__cart__") {
         openCart();
+      } else if (href === "__wishlist__") {
+        openWishlist();
       } else {
         router.push(href);
       }
@@ -189,6 +193,11 @@ export default function ProfileDropdown({ user }: { user: User | null }) {
                   {item.href === "__cart__" && totalItemsCount > 0 && (
                     <span className="ml-auto flex h-5 min-w-5 items-center justify-center rounded-full bg-white px-1.5 text-xs font-medium text-black">
                       {totalItemsCount}
+                    </span>
+                  )}
+                  {item.href === "__wishlist__" && wishlistCount > 0 && (
+                    <span className="ml-auto flex h-5 min-w-5 items-center justify-center rounded-full bg-white px-1.5 text-xs font-medium text-black">
+                      {wishlistCount}
                     </span>
                   )}
                 </button>
@@ -298,7 +307,7 @@ export default function ProfileDropdown({ user }: { user: User | null }) {
 
                 {/* Lista życzeń card */}
                 <button
-                  onClick={() => handleNavigate("/lista-zyczen")}
+                  onClick={() => handleNavigate("__wishlist__")}
                   className="group flex flex-col items-start gap-3 rounded-2xl border border-white/10 bg-white/[0.03] p-6 text-left transition-all duration-200 hover:border-white/20 hover:bg-white/[0.06]"
                 >
                   <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/5 text-white/50 transition-colors duration-200 group-hover:bg-white/10 group-hover:text-white/70">
@@ -307,7 +316,14 @@ export default function ProfileDropdown({ user }: { user: User | null }) {
                     </svg>
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-white">Lista życzeń</p>
+                    <p className="text-sm font-medium text-white">
+                      Lista życzeń
+                      {wishlistCount > 0 && (
+                        <span className="ml-2 inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-white px-1.5 text-xs font-medium text-black">
+                          {wishlistCount}
+                        </span>
+                      )}
+                    </p>
                     <p className="mt-0.5 text-xs text-white/40">Zapisane produkty</p>
                   </div>
                 </button>

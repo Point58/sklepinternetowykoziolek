@@ -1,6 +1,7 @@
 "use client";
 
 import { useCart } from "./CartContext";
+import { useWishlist } from "./WishlistContext";
 
 type Product = {
   id: string;
@@ -10,11 +11,34 @@ type Product = {
 
 export default function ProductCard({ product }: { product: Product }) {
   const { addItem } = useCart();
+  const { toggleItem, hasItem } = useWishlist();
+  const isInWishlist = hasItem(product.id);
 
   return (
-    <div className="rounded-2xl border border-white/10 bg-white/5 p-6 shadow-sm transition-transform duration-200 hover:scale-[1.02]">
-      <p className="text-sm text-white/50">
-        {product.name || "—"}
+    <div className="relative rounded-2xl border border-white/10 bg-white/5 p-6 shadow-sm transition-transform duration-200 hover:scale-[1.02]">
+      <button
+        type="button"
+        onClick={() => toggleItem(product)}
+        className="absolute top-4 right-4 rounded-full p-2 transition-colors duration-200 hover:bg-white/10"
+        aria-label={isInWishlist ? "Usuń z listy życzeń" : "Dodaj do listy życzeń"}
+        title={isInWishlist ? "Usuń z listy życzeń" : "Dodaj do listy życzeń"}
+      >
+        <svg
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill={isInWishlist ? "currentColor" : "none"}
+          stroke="currentColor"
+          strokeWidth="1.8"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className={isInWishlist ? "text-red-400" : "text-white/40 hover:text-white/70"}
+        >
+          <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
+        </svg>
+      </button>
+      <p className="text-sm text-white/50 pr-10">
+        {product.name || "\u2014"}
       </p>
       <p className="mt-2 text-xl font-semibold text-white">{product.price}</p>
       <button
