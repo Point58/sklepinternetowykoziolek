@@ -3,6 +3,7 @@ import { createClient } from "@/app/lib/supabase/server";
 import { isAdmin } from "@/app/lib/supabase/roles";
 import Link from "next/link";
 import ProfileDropdown from "@/app/components/ProfileDropdown";
+import AddProductForm from "./AddProductForm";
 
 export default async function AdminPage() {
   const supabase = await createClient();
@@ -91,6 +92,8 @@ export default async function AdminPage() {
                 <p className="mt-1 text-xs text-white/40">Dodawaj i edytuj produkty</p>
               </div>
             </div>
+
+            <AddProductForm />
           </div>
         </main>
       </div>
