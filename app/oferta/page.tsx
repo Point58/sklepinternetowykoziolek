@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Particles from "../components/Particles";
-import ProductCard from "../components/ProductCard";
+import ProductList from "../components/ProductList";
 import CartTrigger from "../components/CartTrigger";
 
 const navLinks = [
@@ -38,23 +38,11 @@ export default function OfertaPage() {
         </header>
 
         <main className="flex-1 px-6 py-20 sm:px-8 sm:py-28">
-          <div className="mx-auto max-w-2xl">
+          <div className="mx-auto max-w-5xl">
             <h1 className="text-3xl font-semibold tracking-tight text-white sm:text-4xl">
               Oferta
             </h1>
-            <p className="mt-6 text-white/60">
-              Wkrótce tutaj pojawią się opcje.
-            </p>
-
-            <div className="mt-10">
-              <ProductCard
-                product={{
-                  id: "przykladowy-1",
-                  name: "",
-                  price: "29,99 zł",
-                }}
-              />
-            </div>
+            <ProductList />
 
             <Link
               href="/"
