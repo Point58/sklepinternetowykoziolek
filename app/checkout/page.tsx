@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useState } from "react";
 import { useCart } from "../components/CartContext";
 import PaymentMethods from "../components/checkout/PaymentMethods";
 import CartTrigger from "../components/CartTrigger";
@@ -13,7 +14,13 @@ const navLinks = [
 ];
 
 export default function CheckoutPage() {
-  const { items, totalPrice } = useCart();
+  const { items, totalPrice, clearCart } = useCart();
+  const [orderPlaced, setOrderPlaced] = useState(false);
+
+  function handleOrderSuccess() {
+    clearCart();
+    setOrderPlaced(true);
+  }
 
   return (
     <div className="page-backdrop page-home-dark min-h-screen text-white">
@@ -45,13 +52,48 @@ export default function CheckoutPage() {
         <main className="flex-1 px-6 py-12 sm:px-8 sm:py-16">
           <div className="mx-auto max-w-2xl">
             <h1 className="text-2xl font-semibold tracking-tight text-white sm:text-3xl">
-              Płatność
+              {orderPlaced ? "Zamówienie złożone" : "Płatność"}
             </h1>
 
-            {items.length === 0 ? (
+            {orderPlaced ? (
+              <div className="mt-8 rounded-2xl border border-green-500/20 bg-green-500/10 p-8 text-center">
+                <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-green-500/20">
+                  <svg
+                    className="h-8 w-8 text-green-400"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M5 13l4 4L19 7"
+                    />
+                  </svg>
+                </div>
+                <h2 className="text-xl font-semibold text-green-300">
+                  Dziękujemy za zamówienie!
+                </h2>
+                <p className="mt-3 text-sm text-white/60">
+                  Twoje zamówienie zostało przyjęte. Szczegóły zostały wysłane na
+                  nasz adres email. Skontaktujemy się z Tobą w celu potwierdzenia.
+                </p>
+                <p className="mt-2 text-sm text-white/50">
+                  Płatność: za pobraniem przy odbiorze przesyłki.
+                </p>
+                <Link
+                  href="/oferta"
+                  className="mt-6 inline-block rounded-full bg-white px-6 py-3 text-sm font-medium text-black transition-all duration-200 hover:scale-105 hover:bg-white/90"
+                >
+                  Wróć do sklepu
+                </Link>
+              </div>
+            ) : items.length === 0 ? (
               <div className="mt-8 rounded-2xl border border-white/10 bg-white/5 p-8 text-center">
                 <p className="text-white/60">
-                  Twój koszyk jest pusty. Dodaj produkty, aby przejść do płatności.
+                  Twój koszyk jest pusty. Dodaj produkty, aby przejść do
+                  płatności.
                 </p>
                 <Link
                   href="/oferta"
@@ -86,7 +128,11 @@ export default function CheckoutPage() {
                 </section>
 
                 <section className="mt-10">
-                  <PaymentMethods totalPrice={totalPrice} />
+                  <PaymentMethods
+                    items={items}
+                    totalPrice={totalPrice}
+                    onOrderSuccess={handleOrderSuccess}
+                  />
                 </section>
 
                 <Link
