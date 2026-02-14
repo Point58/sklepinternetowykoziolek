@@ -8,6 +8,7 @@ import {
   useMemo,
   useState,
 } from "react";
+import { createClient } from "@/app/lib/supabase/client";
 import CartMenu from "./CartMenu";
 
 export type CartItem = {
@@ -62,8 +63,24 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const [hydrated, setHydrated] = useState(false);
 
   useEffect(() => {
-    setItems(loadCartFromStorage());
+    const loaded = loadCartFromStorage();
+    setItems(loaded);
     setHydrated(true);
+
+    if (loaded.length > 0) {
+      const supabase = createClient();
+      const ids = loaded.map((i) => i.id);
+      supabase
+        .from("products")
+        .select("id")
+        .in("id", ids)
+        .then(({ data }) => {
+          if (data) {
+            const existingIds = new Set(data.map((p: { id: string }) => p.id));
+            setItems((prev) => prev.filter((i) => existingIds.has(i.id)));
+          }
+        });
+    }
   }, []);
 
   useEffect(() => {

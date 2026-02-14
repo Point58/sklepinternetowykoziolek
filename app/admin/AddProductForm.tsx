@@ -23,6 +23,7 @@ export default function AddProductForm() {
   const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
   const [products, setProducts] = useState<Product[]>([]);
   const [loadingProducts, setLoadingProducts] = useState(true);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
 
   useEffect(() => {
     fetchProducts();
@@ -39,6 +40,33 @@ export default function AddProductForm() {
       setProducts(data);
     }
     setLoadingProducts(false);
+  }
+
+  async function deleteProduct(productId: string, imageUrl: string | null) {
+    if (!window.confirm("Czy na pewno chcesz usunac ten produkt?")) return;
+
+    setDeletingId(productId);
+    try {
+      if (imageUrl) {
+        const fileName = imageUrl.split("/").pop();
+        if (fileName) {
+          await supabase.storage.from("product-images").remove([fileName]);
+        }
+      }
+
+      const { error } = await supabase.from("products").delete().eq("id", productId);
+      if (error) throw new Error(`Blad usuwania produktu: ${error.message}`);
+
+      setMessage({ type: "success", text: "Produkt usuniety pomyslnie!" });
+      fetchProducts();
+    } catch (err) {
+      setMessage({
+        type: "error",
+        text: err instanceof Error ? err.message : "Blad podczas usuwania produktu",
+      });
+    } finally {
+      setDeletingId(null);
+    }
   }
 
   async function handleSubmit(e: React.FormEvent) {
@@ -215,6 +243,13 @@ export default function AddProductForm() {
                   <p className="mt-2 text-sm font-semibold text-emerald-400">
                     {product.price.toFixed(2)} PLN
                   </p>
+                  <button
+                    onClick={() => deleteProduct(product.id, product.image_url)}
+                    disabled={deletingId === product.id}
+                    className="mt-3 w-full rounded-lg bg-red-500/10 px-3 py-1.5 text-xs font-medium text-red-400 hover:bg-red-500/20 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  >
+                    {deletingId === product.id ? "Usuwanie..." : "Usun"}
+                  </button>
                 </div>
               </div>
             ))}
